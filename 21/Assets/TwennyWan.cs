@@ -31,7 +31,7 @@ public class TwennyWan : MonoBehaviour {
     private bool submitting = false;
     private bool solved = false;
 
-    int PowerForSubmittingTwennyWan = 0;
+    int PowerForSubmittingTwennyWan = 1;
     int submissionnumber = 0;
 
     void Awake()
@@ -55,7 +55,7 @@ public class TwennyWan : MonoBehaviour {
     void DisplayPress(){
       PowerForSubmittingTwennyWan += 1;
       if (PowerForSubmittingTwennyWan > 4) {
-        PowerForSubmittingTwennyWan = 0;
+        PowerForSubmittingTwennyWan = 1;
       }
       basethingsubmitwhatever.text = PowerForSubmittingTwennyWan.ToString();
     }
@@ -194,7 +194,7 @@ public class TwennyWan : MonoBehaviour {
       screenText.transform.localPosition = new Vector3(0, 0, .0011f);
       if (number == submissionnumber) {
         GetComponent<KMBombModule>().HandlePass();
-        Debug.LogFormat("[21 #{0}] You submitted the right number! Twenny Wan!", numberin21);
+        Debug.LogFormat("[21 #{0}] You submitted the right number! Twenny Wan!", moduleId);
         screenText.text = "Twenny One!";
         basethingsubmitwhatever.text = "21";
         screenText.transform.localScale = new Vector3(0.00000341364f, 0.0000229182f, 69f);
@@ -202,9 +202,9 @@ public class TwennyWan : MonoBehaviour {
       }
       else {
         GetComponent<KMBombModule>().HandleStrike();
-        basethingsubmitwhatever.text = "0";
-        PowerForSubmittingTwennyWan = 0;
-        Debug.LogFormat("[21 #{0}] You submitted {1}, Twenny Nan!", numberin21, submissionnumber);
+        basethingsubmitwhatever.text = "1";
+        PowerForSubmittingTwennyWan = 1;
+        Debug.LogFormat("[21 #{0}] You submitted {1}, Twenny Nan!", moduleId, submissionnumber);
         StartCoroutine(StrikeAnimation());
       }
       yield return null;
@@ -324,6 +324,56 @@ public class TwennyWan : MonoBehaviour {
             screenText.text = tempNumberIn64;
 
             yield return new WaitForSeconds(.0001f);
+        }
+    }
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"Use (!{0} 9/10/display to press that corresponding button. Use !{0} reset/submit to do the corresponding action. Chain using spaces.";
+    #pragma warning restore 414
+
+    IEnumerator ProcessTwitchCommand(string command) {
+        command = command.Trim();
+        string[] parameters = command.Split(' ');
+        for (int i = 0; i < parameters.Length; i++) {
+          if (parameters[i].ToString().ToLower() != "9" && parameters[i].ToString().ToLower() != "10" && parameters[i].ToString().ToLower() != "submit" && parameters[i].ToString().ToLower() != "display" && parameters[i].ToString().ToLower() != "reset") {
+            yield return "sendtochaterror Invalid command!";
+            yield break;
+          }
+          if (i != parameters.Length - 1 && parameters[i].ToString().ToLower() == "submit") {
+            yield return "sendtochaterror You can't submit mid-command!";
+            yield break;
+          }
+          if (i != parameters.Length - 1 && parameters[i].ToString().ToLower() == "reset") {
+            yield return "sendtochaterror You can't reset mid-command!";
+            yield break;
+          }
+          if (parameters[i].ToString().ToLower() == "9") {
+            buttons[0].OnInteract();
+            buttons[0].OnInteractEnded();
+            yield return new WaitForSeconds(.1f);
+          }
+          else if (parameters[i].ToString().ToLower() == "10") {
+            buttons[1].OnInteract();
+            buttons[1].OnInteractEnded();
+            yield return new WaitForSeconds(.1f);
+          }
+          else if (parameters[i].ToString().ToLower() == "display") {
+            DisplayPress();
+            yield return new WaitForSeconds(.1f);
+          }
+          else if (parameters[i].ToString().ToLower() == "submit") {
+            yield return "trycancel";
+            yield return "solve";
+            yield return "strike";
+            buttons[0].OnInteract();
+            yield return new WaitForSeconds(1f);
+            buttons[0].OnInteractEnded();
+          }
+          else if (parameters[i].ToString().ToLower() == "reset") {
+            yield return "trycancel";
+            buttons[1].OnInteract();
+            yield return new WaitForSeconds(1f);
+            buttons[1].OnInteractEnded();
+          }
         }
     }
 }
