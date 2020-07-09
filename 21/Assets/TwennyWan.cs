@@ -53,6 +53,8 @@ public class TwennyWan : MonoBehaviour {
     }
 
     void DisplayPress(){
+      DisplayTwennyWan.AddInteractionPunch();
+      Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, DisplayTwennyWan.transform);
       PowerForSubmittingTwennyWan += 1;
       if (PowerForSubmittingTwennyWan > 4) {
         PowerForSubmittingTwennyWan = 1;
@@ -327,7 +329,7 @@ public class TwennyWan : MonoBehaviour {
         }
     }
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use (!{0} 9/10/display to press that corresponding button. Use !{0} reset/submit to do the corresponding action. Chain using spaces.";
+    private readonly string TwitchHelpMessage = @"Use !{0} 9/10/display to press that corresponding button. Use !{0} reset/submit to do the corresponding action. Chain using spaces.";
     #pragma warning restore 414
 
     IEnumerator ProcessTwitchCommand(string command) {
