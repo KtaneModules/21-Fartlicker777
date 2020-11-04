@@ -56,7 +56,7 @@ public class TwennyWan : MonoBehaviour {
       DisplayTwennyWan.AddInteractionPunch();
       Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, DisplayTwennyWan.transform);
       PowerForSubmittingTwennyWan += 1;
-      if (PowerForSubmittingTwennyWan > 4) {
+      if (PowerForSubmittingTwennyWan > 5) {
         PowerForSubmittingTwennyWan = 1;
       }
       basethingsubmitwhatever.text = PowerForSubmittingTwennyWan.ToString();
@@ -107,9 +107,13 @@ public class TwennyWan : MonoBehaviour {
         {
           if (buttons[buttonNum] == buttons[0]) {
             submissionnumber += (int)Math.Pow(9, PowerForSubmittingTwennyWan);
+            if (submissionnumber > 194480)
+              submissionnumber = 194480;
           }
           else {
             submissionnumber += (int)Math.Pow(10, PowerForSubmittingTwennyWan);
+            if (submissionnumber > 194480)
+              submissionnumber = 194480;
           }
           screenText.text = submissionnumber.ToString();
         }
@@ -197,9 +201,8 @@ public class TwennyWan : MonoBehaviour {
       if (number == submissionnumber) {
         GetComponent<KMBombModule>().HandlePass();
         Debug.LogFormat("[21 #{0}] You submitted the right number! Twenny Wan!", moduleId);
-        screenText.text = "Twenny One!";
+        screenText.text = "yes";
         basethingsubmitwhatever.text = "21";
-        screenText.transform.localScale = new Vector3(0.00000341364f, 0.0000229182f, 69f);
         Audio.PlaySoundAtTransform("twennyone", transform);
       }
       else {
@@ -219,6 +222,7 @@ public class TwennyWan : MonoBehaviour {
       yield return new WaitForSeconds(1.352f);
       submissionnumber = 0;
       submitting = false;
+      screenText.text = numberin21;
     }
 
     IEnumerator DoCrazyStrikeStuff()
@@ -377,5 +381,48 @@ public class TwennyWan : MonoBehaviour {
             buttons[1].OnInteractEnded();
           }
         }
+    }
+
+    IEnumerator TwitchHandleForcedSolve () {
+      buttons[0].OnInteract();
+      buttons[0].OnInteractEnded();
+      yield return new WaitForSeconds(.1f);
+      while (int.Parse(screenText.text) % 10 != number % 10) {
+        buttons[0].OnInteract();
+        buttons[0].OnInteractEnded();
+        yield return new WaitForSeconds(.1f);
+      }
+      while (int.Parse(screenText.text) % 100 != number % 100) {
+        buttons[1].OnInteract();
+        buttons[1].OnInteractEnded();
+        yield return new WaitForSeconds(.1f);
+      }
+      DisplayTwennyWan.OnInteract();
+      while (int.Parse(screenText.text) % 1000 != number % 1000) {
+        buttons[1].OnInteract();
+        buttons[1].OnInteractEnded();
+        yield return new WaitForSeconds(.1f);
+      }
+      DisplayTwennyWan.OnInteract();
+      while (int.Parse(screenText.text) % 10000 != number % 10000) {
+        buttons[1].OnInteract();
+        buttons[1].OnInteractEnded();
+        yield return new WaitForSeconds(.1f);
+      }
+      DisplayTwennyWan.OnInteract();
+      while (int.Parse(screenText.text) % 100000 != number % 100000) {
+        buttons[1].OnInteract();
+        buttons[1].OnInteractEnded();
+        yield return new WaitForSeconds(.1f);
+      }
+      DisplayTwennyWan.OnInteract();
+      while (int.Parse(screenText.text) != number) {
+        buttons[1].OnInteract();
+        buttons[1].OnInteractEnded();
+        yield return new WaitForSeconds(.1f);
+      }
+      buttons[0].OnInteract();
+      yield return new WaitForSeconds(1f);
+      buttons[0].OnInteractEnded();
     }
 }

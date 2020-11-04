@@ -14,7 +14,16 @@ MonoBehaviour:
   id: 21
   title: 21
   author: Me
-  description: Who knew putting in the same number was so awesome?!
+  description: 'Who knew putting in the same number was so awesome?!
+
+
+    Module originally by KingBranBran.
+
+
+    Manual by Danny7007.
+
+
+    If there are any bugs, please contact Fartlicker777#9169 on Discord.'
   version: 1
   outputFolder: C:\Users\asuss\Desktop\Non Gamer\Unity\21\build
   previewImage: {fileID: 2800000, guid: 2090af11598a98b4b8005b2bd382b59a, type: 3}
