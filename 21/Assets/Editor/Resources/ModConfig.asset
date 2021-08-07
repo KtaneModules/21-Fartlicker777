@@ -17,10 +17,16 @@ MonoBehaviour:
   description: 'Who knew putting in the same number was so awesome?!
 
 
+    Convert a number from base 21 to base 10.
+
+
     Module originally by KingBranBran.
 
 
     Manual by Danny7007.
+
+
+    Manual can be found at ktane.timwi.de or in the manuals folder of your game.
 
 
     If there are any bugs, please contact Fartlicker777#9169 on Discord.'
