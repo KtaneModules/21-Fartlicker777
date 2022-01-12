@@ -422,7 +422,8 @@ public class TwennyWan : MonoBehaviour {
         yield return new WaitForSeconds(.1f);
       }
       buttons[0].OnInteract();
-      yield return new WaitForSeconds(1f);
+      while (!holding) yield return true;
       buttons[0].OnInteractEnded();
+      while (submitting) yield return true;
     }
 }
